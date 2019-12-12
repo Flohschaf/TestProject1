@@ -1,0 +1,471 @@
+package pp2013.gruppe07.server.database;
+
+//in dataSQL wird gespeichert: playerName,passwd,level,spieleGewonnen,spieleVerloren 
+//in accountHeroDetails: playerName,
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import pp2013.gruppe07.server.comm.Communication;
+import pp2013.gruppe07.server.comm.Waiter;
+import pp2013.gruppe07.shared.eventManager.event.ClientToServer.LogInEvent;
+import pp2013.gruppe07.shared.eventManager.event.ServerToClient.AccountCreatedEvent;
+import pp2013.gruppe07.shared.eventManager.event.ServerToClient.ClientLogInEvent;
+
+/**
+ * @author Steven
+ * bindet projekt an die datenbank an
+ */
+public class dbase {
+
+	
+	
+
+	// eine neue Zeile in der DB anlegen: neuen Spieler anlegen
+	
+
+	/**
+	 * @author Steven
+	 * erstellt einen neuen accoutn mit passwd
+	 */
+	
+	public void insertNewAccount(int id, String playerName, String passwd) {
+		Connection c = null;
+		boolean successfull = true;
+
+		try {
+			c = DriverManager.getConnection("jdbc:mysql://localhost/gruppe07",
+					"gruppe07", "b5ZE3gvA");
+			// ein Statement Objekt fuer einfache Abfragen
+			Statement createdAccounts = c.createStatement();
+			// Ergebnisse der Abfrage werden in ResultSet gespeicherts
+			ResultSet rs = createdAccounts
+					.executeQuery("SELECT playerName FROM dataSQL");
+			
+			String message="";
+			
+			// pruefe ob der accout schon existiert
+			while (rs.next())
+				if (rs.getString(1).equals(playerName)) {
+					successfull = false;
+					System.out.println("exists:" + rs.getString(1) + "="
+							+ playerName);
+					message = "Account existiert bereits";
+				}
+			// wenn der account noch nicht existiert, lege ihn an
+			if (successfull) {
+				message = "Erfolgreich";
+				// passwd wird mit md5 pruefsumme verschluesselt
+				String hash = getMD5Hash(passwd);
+
+				// ein Statement Objekt fuer einfache Abfragen
+				Statement stmt = c.createStatement();
+				String insert = "INSERT INTO `gruppe07`.`dataSQL` (`playerName` ,`passwd`,`level`,`spieleGewonnen`,`spieleVerloren` )VALUES ('"
+						+ playerName + "', '" + hash + "','1','0','0')";
+				stmt.executeUpdate(insert);
+				
+			}
+			System.out.println(successfull);
+			Communication
+					.newClientMessage(new AccountCreatedEvent(id, successfull, message));
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
+
+
+	
+	/**
+	 * @author Steven
+	 * updatet die account values
+	 * 
+	 * 	// in dataSQL
+	// Statisik nach Spiel updaten: nur Zahlen koennen geupdated werden
+	// Spaltenname: level, spieleGewonnen, spieleVerloren
+	 */
+	
+	 /**
+	 * @author Steven
+	 * gibt gefoderte herowerte zurueck
+	 */
+public int getAccountValue(String playerName, String value){
+	
+	
+	Connection c = null;
+
+
+	try {
+		c = DriverManager.getConnection("jdbc:mysql://localhost/gruppe07",
+				"gruppe07", "b5ZE3gvA");
+		// ein Statement Objekt fuer einfache Abfragen
+		Statement createdAccounts = c.createStatement();
+		// Ergebnisse der Abfrage werden in ResultSet gespeicherts
+		ResultSet rs = createdAccounts
+				.executeQuery("SELECT '"+value+"' FROM dataSQL");
+					
+		// pruefe ob der accout schon existiert
+		
+		rs.next();
+		int i= rs.getInt(1);
+		return i;
+			
+	}catch (SQLException e) {
+	
+		System.out.println(e);
+		return 0;
+	}
+
+	// schliesst auf jeden Fall die Datenbank
+	finally {
+		if (c != null)
+			try {
+				c.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	
+	
+}
+	
+	public void updateAccountValue(String playerName, String spalte, int newValue) {
+		Connection c = null;
+	boolean exists = false;
+		
+		try {
+			
+			Statement createdAccounts = c.createStatement();
+			// Ergebnisse der Abfrage werden in ResultSet gespeicherts
+			ResultSet rs = createdAccounts
+					.executeQuery("SELECT playerName FROM dataSQL");
+			
+			
+			
+			c = DriverManager.getConnection("jdbc:mysql://localhost/gruppe07",
+					"gruppe07", "b5ZE3gvA");
+			// ein Statement Objekt fuer einfache Abfragen
+			Statement stmt = c.createStatement();
+			String update = "UPDATE dataSQL SET " + spalte + " ='" + newValue
+					+ "' WHERE playerName ='" + playerName + "'";
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
+
+	
+	 /**
+		 * @author Steven
+		 * //prueft das passwort  bei der anmeldung. es wird auch geprueft ob der benutzer existiert
+		 */
+	public void checkPasswd(int id, String playerName, String passwdInsert) {
+			Connection c = null;
+		boolean exists = false;
+		boolean correct = false;
+		// passwd wird mit md5 pruefsumme verschluesselt	
+		String hash = getMD5Hash(passwdInsert);
+		String nachricht = "Falsches Paswort angegeben";
+		
+		try {
+			
+			// mit DB der Gruppe 07 verbinden
+			//df2015			c = DriverManager.getConnection("jdbc:mysql://localhost/gruppe07",
+			//df2015					"gruppe07", "b5ZE3gvA");
+						
+		//pruefe, ob spieler ueberhaut existiert
+			//df2015	Statement checkAccounts = c.createStatement();
+		// Ergebnisse der Abfrage werden in ResultSet gespeicherts
+			//df2015	ResultSet rs = checkAccounts
+			//df2015	.executeQuery("SELECT playerName FROM dataSQL");
+		
+		// pruefe ob der accout schon existiert
+			//df2015	while (rs.next())
+			//df2015		if (rs.getString(1).equals(playerName)) 
+				exists = true;
+		
+			
+	
+			// Ergebnisse der Abfrage werden in ResultSet gespeicherts
+		
+			if(exists){
+				// ein Statement Objekt fuer einfache Abfragen
+				//df2015	Statement stmt = c.createStatement();
+				//df2015rs = stmt.executeQuery("SELECT passwd FROM dataSQL WHERE playerName='"
+				//df2015				+ playerName + "'");
+				//df2015rs.next();
+				//df2015	System.out.println(hash.equals(rs.getString(1))
+				//df2015		+ "   gespeichert:   " + rs.getString(1) + "   Eingabse  "
+				//df2015		+ hash);
+
+				//df2015if (hash.equals(rs.getString(1))) {
+				correct = true;
+				//df2015	nachricht = "";
+				//df2015	System.out.println(hash.equals(rs.getString(1)));
+				Waiter.getClients().get(id).setAccountName(playerName);
+				//df2015}
+			Communication.newClientMessage(new ClientLogInEvent(id, correct,
+					nachricht));
+			}else{
+				nachricht = "Benutzer existiert nicht, Account anlegen!";
+			}	} catch (Exception e/*df2015SQLException e*/) {
+				//df2015System.out.println(e);
+			//df2015
+			System.out.println("jo das ist es");
+			
+		}
+
+		// schliesst auf jeden Fall die Datenbank
+		finally {
+			if (c != null)
+				try {
+					c.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+
+	}
+	 /**
+		 * @author Steven
+		 * gibt gefoderte herowerte zurueck
+		 */
+	public int getHeroValue(String playerName, String hero, String value){
+		
+		
+		Connection c = null;
+
+
+		try {
+			c = DriverManager.getConnection("jdbc:mysql://localhost/gruppe07",
+					"gruppe07", "b5ZE3gvA");
+			// ein Statement Objekt fuer einfache Abfragen
+			Statement createdAccounts = c.createStatement();
+			// Ergebnisse der Abfrage werden in ResultSet gespeicherts
+			ResultSet rs = createdAccounts
+					.executeQuery("SELECT '"+value+"' FROM acountHeroDetails");
+						
+			// pruefe ob der accout schon existiert
+			
+			rs.next();
+			int i= rs.getInt(1);
+			return i;
+				
+		}catch (SQLException e) {
+		
+			System.out.println(e);
+			return 0;
+		}
+
+		// schliesst auf jeden Fall die Datenbank
+		finally {
+			if (c != null)
+				try {
+					c.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		
+		
+		
+	}
+	
+	
+	 /**
+		 * @author Steven
+		 * /legt zu einem Helden einen Hero a
+		 */
+	
+	public void playerNewHero(int id, String playerName, String hero){
+		Connection c = null;
+		boolean exists = false;
+		try {
+			c = DriverManager.getConnection("jdbc:mysql://localhost/gruppe07",
+					"gruppe07", "b5ZE3gvA");
+			// ein Statement Objekt fuer einfache Abfragen
+			Statement createdAccounts = c.createStatement();
+			// Ergebnisse der Abfrage werden in ResultSet gespeicherts
+			ResultSet rs = createdAccounts
+					.executeQuery("SELECT playerName, hero FROM acountHeroDetails");
+			
+			String message="";
+			
+			// pruefe ob der accout schon existiert
+			while (rs.next())
+				if (rs.getString(1).equals(playerName) && rs.getString(2).equals(hero)) {
+					exists = true;
+					message = "Account existiert bereits";
+				}
+			// wenn der account noch nicht existiert, lege ihn an
+			if (!exists) {
+				message = "Erfolgreich";
+
+				// ein Statement Objekt fuer einfache Abfragen
+				Statement stmt = c.createStatement();
+				String insert = "INSERT INTO `gruppe07`.`acountHeroDetails` (`playerName` ,`hero`,`totalKills`,`totalDeaths`,`totalLasthits` )VALUES ('"+ playerName + "', '" + hero + "','0','0','0')";
+				stmt.executeUpdate(insert);
+				
+			}
+			//Communication.newClientMessage(new AccountCreatedEvent(id, successfull, message));
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	
+		
+		
+		
+		
+	}
+	
+	
+	 /**
+		 * @author Steven
+		 * /updatet die Werte des Heros
+	*Reihenfolge spalten: totalKills, totalDeaths, totalLasthits
+		 */
+	public void updateHeroValues(String playerName,String hero, String spalte, int newValue) {
+		Connection c = null;
+	boolean exists = false;	
+		try {
+			c = DriverManager.getConnection("jdbc:mysql://localhost/gruppe07",
+					"gruppe07", "b5ZE3gvA");
+			// ein Statement Objekt fuer einfache Abfragen
+			Statement createdAccounts = c.createStatement();
+			// Ergebnisse der Abfrage werden in ResultSet gespeicherts
+			ResultSet rs = createdAccounts
+					.executeQuery("SELECT playerName, hero FROM acountHeroDetails");
+			
+			String message="";
+			
+			// pruefe ob der accout schon existiert
+			while (rs.next())
+				if (rs.getString(1).equals(playerName) && rs.getString(2).equals(hero)) {
+					exists = true;
+					message = "Account existiert bereits";
+				}
+			// wenn der account noch nicht existiert, lege ihn an
+			if (exists) {
+				createdAccounts = c.createStatement();
+				// Ergebnisse der Abfrage werden in ResultSet gespeicherts
+				
+				c = DriverManager.getConnection("jdbc:mysql://localhost/gruppe07",
+						"gruppe07", "b5ZE3gvA");
+				// ein Statement Objekt fuer einfache Abfragen
+				Statement stmt = c.createStatement();
+				String update = "UPDATE acountHeroDetails SET " + spalte + " ='" + newValue
+						+ "' WHERE playerName ='" + playerName + "' AND hero='"+hero+"'";
+				stmt.executeUpdate(update);
+				
+				
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}	
+	
+	
+
+	 /**
+		 * @author Steven
+		 * //gibt alle heros mit deren values fuer einen spieler aus
+		 */
+public String[][] getAccountHeros(String playerName){
+	Connection c = null;	
+	//zurueckgegebener String array fuer statistic anzeige
+	String[][] accountHeros = new String[8][4];
+	
+	for (int j=0;j<8;j++){
+	for (int i=0;i<4;i++){	
+		accountHeros[j][i] ="0";
+		if(j==0)
+			accountHeros[j][i] ="empty";	
+		
+		
+		}
+		
+	}
+	try{
+		
+	c = DriverManager.getConnection("jdbc:mysql://localhost/gruppe07",
+			"gruppe07", "b5ZE3gvA");
+	// ein Statement Objekt fuer einfache Abfragen
+	Statement createdAccounts = c.createStatement();
+	// Ergebnisse der Abfrage werden in ResultSet gespeicherts
+	ResultSet rs = createdAccounts
+			.executeQuery("SELECT hero,totalKills,totalDeaths,totalLasthits FROM acountHeroDetails WHERE playerName='"+playerName+"'");
+
+// speichert heldenwerte in stringarray
+	int i=0;
+	while (rs.next()){
+			System.out.println("hero :" + rs.getString(1) + "  totalkills: "+ rs.getString(2) + "  totaldeaths: "+ rs.getString(3) + "  lasthits: "+ rs.getString(4));
+			accountHeros[i][0]=rs.getString(1);
+			accountHeros[i][1]=rs.getString(2);
+			accountHeros[i][2]=rs.getString(3);
+			accountHeros[i][3]=rs.getString(4);
+			i++;
+	}
+	for (int j=0;j<8;j++){
+		System.out.println("");
+	
+		for ( i=0;i<4;i++){
+				System.out.print(accountHeros[j][i] + "    ");
+				
+		}
+	}
+return accountHeros;
+
+	/*Communication
+			.newClientMessage(new AccountCreatedEvent(id, successfull, message));*/
+} catch (SQLException e) {
+	System.out.println(e);
+	return accountHeros;
+}
+	
+	
+	
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+/**
+	 * @author Steven
+	 * 	// gibt den MD5 hash Wert zurueck
+	// quelle:
+	// http://docs.oracle.com/javase/6/docs/api/java/security/MessageDigest.html
+	
+	 */
+public String getMD5Hash(String passwd) {
+
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+			md.update(passwd.getBytes());
+			byte[] digest = md.digest();
+			StringBuffer sb = new StringBuffer();
+			for (byte b : digest) {
+				sb.append(Integer.toHexString((int) (b & 0xff)));
+			}
+			return sb.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+
+}

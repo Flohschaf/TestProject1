@@ -1,0 +1,268 @@
+package pp2013.gruppe07.shared.entity;
+
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.util.UUID;
+
+import javax.swing.JComponent;
+/**
+ * 
+ * @author daniel
+ *  Dieser Held enthaelt noch die zuerst geplante Paint Methode.
+ *GeneralHate
+ */
+public class GeneralHate extends Hero{
+
+	
+	//nahkampf
+	//first skill Kugelhagel schaden in umgebung
+		//second skill Motivations ruf
+		//third skill mega bombe
+
+	public GeneralHate(UUID id,int x, int y,Team team,boolean isHuman) {
+		super(id,x, y,team,isHuman,Heronames.GENERAL_HATE,1,50);
+		heroname="SirZankalot";
+		fightart="sword";
+//		IMAGE = Toolkit.getDefaultToolkit().getImage( "Images/Generalkleinlinks.png" );
+//		IMAGE2 = Toolkit.getDefaultToolkit().getImage( "Images/Genrealgross.png" );
+//		IMAGE3 = Toolkit.getDefaultToolkit().getImage( "Images/Generalklein.png" );
+		
+		 skillNames[0]="Kugelhagel";
+		 skillNames[1]= "Haddle Ruf";
+		 skillNames[2]="Mega Bombe";
+		 skillNames[3]="Ultimate";
+		
+		 	
+		 
+		
+		default_values[0]=200;
+		default_values[1]=10;
+		default_values[2]=20;
+		default_values[3]=1000;
+		default_values[4]=300;
+		default_values[5]=10;
+		default_values[6]=1000;
+		default_values[7]=150;
+		akt_life=default_values[6];
+		akt_mana=default_values[7];
+		
+//		
+//		position_values = {};
+		position_values[0]=-15;
+		position_values[1]=-20;
+		position_values[2]=-15;
+		position_values[3]=-20;
+		position_values[4]=-30;
+		position_values[5]=-25;
+		position_values[6]=-30;
+		position_values[7]=35;
+		position_values[8]=0;
+		position_values[9]=0;
+		position_values[10]=0;
+		position_values[11]=0;
+		position_values[12]=0;
+		position_values[13]=0;
+		position_values[14]=0;
+		position_values[15]=0;
+		position_values[16]=0;
+		position_values[17]=0;
+		position_values[18]=0;
+		position_values[19]=0;
+		position_values[20]=0;
+		position_values[21]=0;
+		position_values[22]=0;
+		position_values[23]=0;
+
+		
+	}
+
+	
+
+	public boolean getattack(){
+		return attack;
+	}
+//	@Override
+//	public void paint(Graphics g, JComponent jComp, int[] position) {
+//		g.setColor(Color.black);
+//		g.fillRect(position[0], position[1], 53, 6);
+//		g.setColor(Color.green);	
+//		if(getlife()>=0)
+//		g.fillRect(position[0]+1, position[1]+1,(getlife()*51/default_values[6]), 4);
+//		if(getAbilitiesaktivated()[1]){
+//			if (attacktimeactivated>time)attacktimeactivated=time;
+//			if(time >attacktimeactivated+4)
+//			{setAbilitiesaktivated(false,1);
+//			attacktimeactivated=Integer.MAX_VALUE;
+//		}
+//			
+//				if(attacktime==1)
+//					g.drawImage(SecondSkill1rechts,position[0]-50,position[1]-15,jComp);
+//				if(attacktime==2)
+//					g.drawImage(SecondSkill2rechts,position[0]-50,position[1]-20,jComp);}
+//			
+//		
+//	
+//		if(getdirection()==2)
+//			g.drawImage(IMAGE,position[0]+10,position[1],jComp);
+//		if(getdirection()==1)
+//			g.drawImage(IMAGE3,position[0]+10,position[1],jComp);
+//		if(getlife()<=0){
+//			if (deathtime>time)deathtime=time;
+//			if(time <deathtime+2)
+//			g.drawImage(IMAGEDIE,position[0],position[1],jComp);
+//		}
+//		if (getattack()){
+//			if (attacktimeactivated>time)attacktimeactivated=time;
+//			if(time >attacktimeactivated+4)
+//			{setattack(false);
+//			attacktimeactivated=Integer.MAX_VALUE;
+//		}
+//			if(getAttackdirection()==2){
+//			
+//				if(attacktime==1)
+//					g.drawImage(AttackImage1,position[0]-10,position[1]-15,jComp);
+//				if(attacktime==2)
+//					g.drawImage(AttackImage2,position[0]-5,position[1]-20,jComp);}
+//			if(getAttackdirection()==1)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(AttackImage1links,position[0]-30,position[1]-15,jComp);
+//				if(attacktime==2)
+//					g.drawImage(AttackImage2links,position[0]-35,position[1]-20,jComp);}
+//				
+//			
+//			if(getAttackdirection()==3)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(AttackImage1oben,position[0],position[1]-25,jComp);
+//				if(attacktime==2)
+//					g.drawImage(AttackImage2oben,position[0]-30,position[1]-30,jComp);}
+//			if(getAttackdirection()==4)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(AttackImage1unten,position[0]-20,position[1]+30,jComp);
+//				if(attacktime==2)
+//					g.drawImage(AttackImage2unten,position[0]-15,position[1]+35,jComp);}
+//			}
+//		if(getAbilitiesaktivated()[0]){
+//			if (attacktimeactivated>time)attacktimeactivated=time;
+//			if(time >attacktimeactivated+2)
+//			{setAbilitiesaktivated(false,0);
+//			attacktimeactivated=Integer.MAX_VALUE;
+//		}
+//			if(getAttackdirection()==2)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(FirstSkill1rechts,position[0]+30,position[1]+10,jComp);
+//				if(attacktime==2)
+//					g.drawImage(FirstSkill2rechts,position[0]+60,position[1]+10,jComp);}
+//			if(getAttackdirection()==1)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(FirstSkill1links,position[0]-50,position[1]+10,jComp);
+//				if(attacktime==2)
+//					g.drawImage(FirstSkill2links,position[0]-80,position[1]+10,jComp);}
+//				
+//			
+//			if(getAttackdirection()==3)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(FirstSkill1oben,position[0]-20,position[1]-50,jComp);
+//				if(attacktime==2)
+//					g.drawImage(FirstSkill2oben,position[0]-20,position[1]-90,jComp);}
+//			if(getAttackdirection()==4)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(FirstSkill1unten,position[0]-20,position[1]+40,jComp);
+//				if(attacktime==2)
+//					g.drawImage(FirstSkill2unten,position[0]-20,position[1]+80,jComp);}	
+//			
+//		}
+//		
+//		if(getAbilitiesaktivated()[2]){
+//			if (attacktimeactivated>time)attacktimeactivated=time;
+//			if(time >attacktimeactivated+2)
+//			{setAbilitiesaktivated(false,2);
+//			attacktimeactivated=Integer.MAX_VALUE;
+//		} 
+//			if(getAttackdirection()==2)
+//			{	
+//				if(attacktime==1)
+//					g.drawImage(ThirdSkill1rechts,position[0]+80,position[1]-15,jComp);
+//				if(attacktime==2)
+//					g.drawImage(ThirdSkill2rechts,position[0]+120,position[1]-20,jComp);}
+//			if(getAttackdirection()==1)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(ThirdSkill1links,position[0]-100,position[1]-15,jComp);
+//				if(attacktime==2)
+//					g.drawImage(ThirdSkill2links,position[0]-140,position[1]-20,jComp);}
+//				
+//			
+//			if(getAttackdirection()==3)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(ThirdSkill1oben,position[0]-10,position[1]-120,jComp);
+//				if(attacktime==2)
+//					g.drawImage(ThirdSkill2oben,position[0]-5,position[1]-160,jComp);}
+//			if(getAttackdirection()==4)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(ThirdSkill1unten,position[0]-10,position[1]+50,jComp);
+//				if(attacktime==2)
+//					g.drawImage(ThirdSkill2unten,position[0]-5,position[1]+90,jComp);}	
+//			}
+//		
+//		if(getAbilitiesaktivated()[3]){
+//			if (attacktimeactivated>time)attacktimeactivated=time;
+//			if(time >attacktimeactivated+2)
+//			{setAbilitiesaktivated(false,3);
+//			attacktimeactivated=Integer.MAX_VALUE;
+//		}
+//			if(getAttackdirection()==2)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(FourthSkill1rechts,position[0]+20,position[1]-15,jComp);
+//				if(attacktime==2)
+//					g.drawImage(FourthSkill2rechts,position[0]+25,position[1]-20,jComp);}
+//			if(getAttackdirection()==1)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(FourthSkill1links,position[0]-30,position[1]-15,jComp);
+//				if(attacktime==2)
+//					g.drawImage(FourthSkill2links,position[0]-35,position[1]-20,jComp);}
+//				
+//			
+//			if(getAttackdirection()==3)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(FourthSkill1oben,position[0]-10,position[1]-40,jComp);
+//				if(attacktime==2)
+//					g.drawImage(FourthSkill2oben,position[0]-5,position[1]-35,jComp);}
+//			if(getAttackdirection()==4)
+//			{
+//				if(attacktime==1)
+//					g.drawImage(FourthSkill1unten,position[0]-10,position[1]+15,jComp);
+//				if(attacktime==2)
+//					g.drawImage(FourthSkill2unten,position[0]-5,position[1]+20,jComp);}	
+//			
+//		}	
+//			
+//		
+//	}
+//	public void paintHeroImageMini(Graphics g, JComponent jComp, int[] position) {
+//		if(TEAM.equals(Team.BLUE))
+//			g.setColor(Color.blue);
+//			if(TEAM.equals(Team.RED))
+//				g.setColor(Color.red);
+//			g.fillOval(position[0], position[1],4, 4);
+//			
+//		
+//	}
+	
+	
+}
+

@@ -1,0 +1,71 @@
+10
+
+dir
+2298
+svn+ssh://proglab.informatik.uni-koeln.de/progprak/gruppe07/repository/shared/src/pp2013/gruppe07/shared/eventManager/event
+svn+ssh://proglab.informatik.uni-koeln.de/progprak/gruppe07/repository
+
+
+
+2013-07-02T10:32:01.658027Z
+2265
+Felix
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+e6045407-1a7a-4b8c-ac35-ba88be5d2f9c
+
+ClientToServer
+dir
+
+Event.java
+file
+
+
+
+
+2013-07-02T12:11:14.143000Z
+1d1d2669980482e222bbaebf01e84b75
+2013-07-02T10:32:01.658027Z
+2265
+Felix
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2034
+
+InternalCLient
+dir
+
+ServerToClient
+dir
+
